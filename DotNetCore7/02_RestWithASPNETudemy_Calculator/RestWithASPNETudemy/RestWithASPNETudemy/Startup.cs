@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using RestWithASPNETudemy.Model.Context;
+using RestWithASPNETudemy.Service;
 using RestWithASPNETudemy.Service.Implementations;
 
 namespace DotNetCore5
@@ -23,6 +24,9 @@ namespace DotNetCore5
             var serverVersion = new MySqlServerVersion(new Version (8,0,25));
 
             services.AddDbContext<MySQLContext>(options =>  options.UseMySql(connection, ServerVersion.AutoDetect(connection)));
+
+            /// Version API
+            services.AddApiVersioning();
 
             /// Dependency Injection
             services.AddScoped<IPersonService, PersonServiceImplementation>();

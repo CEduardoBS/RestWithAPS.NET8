@@ -1,6 +1,6 @@
 ﻿using RestWithASPNETudemy.Model;
 
-namespace RestWithASPNETudemy.Service.Implementations
+namespace RestWithASPNETudemy.Service
 {
     public interface IPersonService
     {

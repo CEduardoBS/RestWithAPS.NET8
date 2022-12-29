@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Query;
 using Microsoft.Extensions.Logging;
 using RestWithASPNETudemy.Model;
-using RestWithASPNETudemy.Service.Implementations;
+using RestWithASPNETudemy.Service;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,8 +14,9 @@ using System.Threading.Tasks;
 
 namespace DotNetCore5.Controllers
 {
+    [ApiVersion("1")]
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("api/[controller]/v{version:apiVersion}")]
     public class PersonController : ControllerBase
     {
 
