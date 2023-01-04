@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Query;
 using Microsoft.Extensions.Logging;
 using RestWithASPNETudemy.Model;
-using RestWithASPNETudemy.Service;
+using RestWithASPNETudemy.Business;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,12 +22,12 @@ namespace DotNetCore5.Controllers
 
         private readonly ILogger<PersonController> _logger;
 
-        private IPersonService _personService;
+        private IPersonBusiness _personBusiness;
 
-        public PersonController(ILogger<PersonController> logger, IPersonService personService)
+        public PersonController(ILogger<PersonController> logger, IPersonBusiness personBusiness)
         {
             _logger = logger;
-            _personService = personService;
+            _personBusiness = personBusiness;
         }
 
         CredentialCache credCache = new CredentialCache();
@@ -38,7 +38,7 @@ namespace DotNetCore5.Controllers
             string user = "admin";
             string secret = "GuiMcz2022";
             var domain = "http://10.0.4.240/";
-            var person = _personService.FindAll();
+            var person = _personBusiness.FindAll();
 
             credCache.Add(new Uri(domain), "Digest", new NetworkCredential(user, secret));
             var httpClient = new HttpClient(new HttpClientHandler { Credentials = credCache });
@@ -52,7 +52,7 @@ namespace DotNetCore5.Controllers
         [HttpGet("{id}")]
         public IActionResult Get(long id)
         {
-            var person = _personService.FindById(id);
+            var person = _personBusiness.FindById(id);
             if (person == null) return NotFound();
             return Ok(person);
         }
@@ -62,7 +62,7 @@ namespace DotNetCore5.Controllers
         public IActionResult Post([FromBody] Person person)
         {
             if (person == null) return BadRequest();
-            return Ok(_personService.Create(person));
+            return Ok(_personBusiness.Create(person));
         }
 
         
@@ -70,14 +70,14 @@ namespace DotNetCore5.Controllers
         public IActionResult Put([FromBody] Person person)
         {
             if (person == null) return BadRequest();
-            return Ok(_personService.Update(person));
+            return Ok(_personBusiness.Update(person));
         }
 
         
         [HttpDelete("{id}")]
         public IActionResult Delet(long id)
         {
-            _personService.Delete(id);
+            _personBusiness.Delete(id);
             return NoContent();
         }
 

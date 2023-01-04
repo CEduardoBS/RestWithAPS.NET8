@@ -1,8 +1,8 @@
 ﻿using RestWithASPNETudemy.Model;
 
-namespace RestWithASPNETudemy.Service
+namespace RestWithASPNETudemy.Repository
 {
-    public interface IPersonService
+    public interface IPersonRepository
     {
         Person Create(Person person);
 
@@ -13,5 +13,7 @@ namespace RestWithASPNETudemy.Service
         Person Update(Person person);
 
         void Delete(long id);
+
+        bool Exists(long id);
     }
 }

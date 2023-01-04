@@ -3,13 +3,13 @@ using RestWithASPNETudemy.Model;
 using RestWithASPNETudemy.Model.Context;
 using System;
 
-namespace RestWithASPNETudemy.Service.Implementations
+namespace RestWithASPNETudemy.Repository.Implementations
 {
-    public class PersonServiceImplementation : IPersonService
+    public class PersonRepositoryImplementation : IPersonRepository
     {
         private MySQLContext _context;
 
-        public PersonServiceImplementation(MySQLContext context)
+        public PersonRepositoryImplementation(MySQLContext context)
         {
             _context = context;
         }
@@ -36,7 +36,6 @@ namespace RestWithASPNETudemy.Service.Implementations
             }
             catch (Exception ex)
             {
-
                 throw ex;
             }
 
@@ -45,7 +44,7 @@ namespace RestWithASPNETudemy.Service.Implementations
 
         public Person Update(Person person)
             {
-                if (!Exists(person.Id)) return new Person();
+                if (!Exists(person.Id)) return null;
             
                 var result = _context.People.SingleOrDefault(p => p.Id.Equals(person.Id));
 
@@ -84,7 +83,7 @@ namespace RestWithASPNETudemy.Service.Implementations
                 }
             }
         }
-        private bool Exists(long id)
+        public bool Exists(long id)
         {
             return _context.People.Any(p => p.Id.Equals(id));
         }
