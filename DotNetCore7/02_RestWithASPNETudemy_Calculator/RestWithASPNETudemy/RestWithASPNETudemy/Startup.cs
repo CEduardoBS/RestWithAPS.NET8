@@ -6,6 +6,8 @@ using RestWithASPNETudemy.Repository;
 using RestWithASPNETudemy.Repository.Implementations;
 using Serilog;
 using EvolveDb;
+using Microsoft.OpenApi.Models;
+using Microsoft.AspNetCore.Rewrite;
 
 namespace DotNetCore5
 {
@@ -26,7 +28,10 @@ namespace DotNetCore5
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            
+            services.AddCors(options => options.AddDefaultPolicy(builder =>
+            {
+                builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
+            }));
             services.AddControllers();
 
             var connection  = Configuration["MySQLConnection:MySQLConnectionString"];
@@ -40,12 +45,29 @@ namespace DotNetCore5
 
             /// Version API
             services.AddApiVersioning();
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1",
+                    new OpenApiInfo
+                    {
+                        Title = "RestGuidoUdemy",
+                        Version = "v1",
+                        Description = "Teste",
+                        Contact = new OpenApiContact
+                        {
+                            Name = "Eduardo",
+                            Url = new Uri("https://www.lojasguido.com.br")
+                        }
+                    });
+            });
 
             /// Dependency Injection
             services.AddScoped<IPersonBusiness, PersonBusinessImplementation>();
             services.AddScoped<IPersonRepository, PersonRepositoryImplementation>();
             services.AddScoped<IBooksBusiness, BooksBusinessImplementation>();
             services.AddScoped<IBooksRepository, BooksRepositoryImplemantation>();
+            services.AddScoped<IAppAgendaCDBusiness, AppAgendaCDBusinessImplementation>();
+            services.AddScoped<IAppAgendaCDRepository, AppAgendaCDRepositoryImplementation>();
         }
 
 
@@ -57,9 +79,19 @@ namespace DotNetCore5
                 app.UseDeveloperExceptionPage();
             }
 
+            app.UseSwagger();
+
+            app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "RestGuidoUdemy v1"));
+
+            var option = new RewriteOptions();
+            option.AddRedirect("^$", "swagger");
+            app.UseRewriter(option);
+
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseCors();
 
             app.UseAuthorization();
 

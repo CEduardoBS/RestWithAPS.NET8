@@ -3,9 +3,9 @@ using System.Net;
 
 namespace RestWithASPNETudemy.Controllers
 {
-
+    [ApiVersion("1")]
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("api/[controller]/v{version:apiVersion}")]
     public class OpenDoorController : ControllerBase
     {
 
@@ -32,7 +32,7 @@ namespace RestWithASPNETudemy.Controllers
             var httpClient = new HttpClient(new HttpClientHandler { Credentials = credCache });
             var answer = httpClient.GetAsync(new Uri($"{domain}cgi-bin/accessControl.cgi?action=openDoor&channel=1&UserID=1&Type=Remote"));    
 
-            return Ok(answer);
+            return Ok();
 
         }
 

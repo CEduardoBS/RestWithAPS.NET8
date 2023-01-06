@@ -15,7 +15,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Include="Business\IAppAgendaCDBusiness.cs" />
     <Compile Include="Business\IBooksBusiness.cs" />
+    <Compile Include="Business\Implementations\AppAgendaCDBusinessImplementation.cs" />
     <Compile Include="Business\Implementations\BooksBusinessImplementation.cs" />
     <Compile Include="Business\IPersonBusiness.cs" />
     <Compile Include="Business\Implementations\PersonBusinessImplementation.cs" />
@@ -29,6 +31,7 @@
     <PackageReference Include="Serilog" Version="2.12.0" />
     <PackageReference Include="Serilog.AspNetCore" Version="6.1.0" />
     <PackageReference Include="Serilog.Sinks.Console" Version="4.1.0" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
   </ItemGroup>
 
 </Project>
